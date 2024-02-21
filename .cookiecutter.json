@@ -1,0 +1,16 @@
+{
+  "_checkout": "2022.6.3",
+  "_output_dir": "/Users/kamil/Repozytoria",
+  "_repo_dir": "/Users/kamil/.cookiecutters/cookiecutter-hypermodern-python",
+  "_template": "gh:cjolowicz/cookiecutter-hypermodern-python",
+  "author": "Kamil E",
+  "copyright_year": "2024",
+  "development_status": "Development Status :: 4 - Beta",
+  "email": "kamil@essekkat.pl",
+  "friendly_name": "Mac Keyboard Shortcuts",
+  "github_user": "ekamil",
+  "license": "MIT",
+  "package_name": "mac_keyboard_shortcuts",
+  "project_name": "mac-keyboard-shortcuts",
+  "version": "0.0.0"
+}

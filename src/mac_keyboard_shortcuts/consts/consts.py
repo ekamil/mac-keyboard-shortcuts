@@ -1,0 +1,2 @@
+MISSING = "-"
+KEY_SHORT_FORMAT_WIDTH = 3 + 3 + 50 + 10 + 40 + 4
