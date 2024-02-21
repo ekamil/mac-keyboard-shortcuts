@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Self
 
 from mac_keyboard_shortcuts.consts.actions import Actions
 from mac_keyboard_shortcuts.consts.apple import *
 from mac_keyboard_shortcuts.consts.consts import MISSING
-from mac_keyboard_shortcuts.consts.keys import KeysEnum
+from mac_keyboard_shortcuts.consts.keys import Keys
 from mac_keyboard_shortcuts.consts.modifiers import Modifiers
 from mac_keyboard_shortcuts.types.key import Key
 
@@ -50,7 +51,7 @@ class ShortcutEntry:
         )
 
     @classmethod
-    def parse(cls, action_number: str, entry_dict: dict) -> Self:
+    def parse(cls, action_number: str, entry_dict: dict) -> ShortcutEntry:
         managed = True
         action = Actions.get_by_value(action_number)
         if action:
@@ -74,7 +75,7 @@ class ShortcutEntry:
         modifiers = Modifiers.find_constituent_flags(modifiers_value)
         ascii_code = entry_dict[VALUE][PARAMETERS][0]
         mac_key_code = entry_dict[VALUE][PARAMETERS][1]
-        key_sequence = KeysEnum.find_key_by_mac_key_code(mac_key_code)
+        key_sequence = Keys.find_key_by_mac_key_code(mac_key_code)
         if not key_sequence:
             key_sequence = Key.unknown(ascii_code=ascii_code, mac_key_code=mac_key_code)
             if mac_key_code != NON_ASCII:

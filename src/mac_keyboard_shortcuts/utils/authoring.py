@@ -5,7 +5,7 @@ from typing import Type
 
 import requests
 
-from mac_keyboard_shortcuts.mac_set_keyboard_shortcuts import Key
+from mac_keyboard_shortcuts.types.key import Key
 
 
 def download_key_definitions(print_code=True) -> Type[Enum]:
@@ -41,9 +41,9 @@ def download_key_definitions(print_code=True) -> Type[Enum]:
         raise ValueError("Some attributes were missed - debug me!")
     if len(set([k.mac_key_code for k in attributes.values()])) != len(attributes):
         raise ValueError("Duplicate Mac key codes - debug me!")
-    new_enumeration = Enum("KeysEnum", attributes)
+    new_enumeration = Enum("Keys", attributes)
     if print_code:
-        print("class KeysEnum(Key, Enum):")
+        print("class Keys(Key, Enum):")
         print("    # fmt: off")
         for name, value in attributes.items():
             print(f"    {name} = {value}")

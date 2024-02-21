@@ -4,6 +4,7 @@ import shutil as sh
 import subprocess
 from pathlib import Path
 from pprint import pprint
+from typing import Union
 
 from mac_keyboard_shortcuts.consts.apple import APPLE_SYMBOLIC_HOT_KEYS
 from mac_keyboard_shortcuts.consts.consts import KEY_SHORT_FORMAT_WIDTH
@@ -11,7 +12,7 @@ from mac_keyboard_shortcuts.types.entry import ShortcutEntry
 from mac_keyboard_shortcuts.utils.diff_side_by_side import better_diff
 
 
-def print_plist(path: str | Path) -> dict[str, dict]:
+def print_plist(path: Union[str, Path]) -> dict[str, dict]:
     with open(path, "rb") as fd:
         data = pl.load(fd, fmt=pl.FMT_BINARY, dict_type=dict)
     print(data.keys())
@@ -68,8 +69,8 @@ def plist_writer(
 
 
 def diff_plists(
-    old: Path | str,
-    new: Path | str,
+    old: Union[Path, str],
+    new: Union[Path, str],
     width: int = 2 * KEY_SHORT_FORMAT_WIDTH,
     print_common_lines: bool = True,
     use_colours: bool = True,

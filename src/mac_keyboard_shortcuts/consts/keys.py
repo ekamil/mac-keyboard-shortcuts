@@ -1,10 +1,10 @@
+from __future__ import annotations
 from enum import Enum
-from typing import Self
 
 from mac_keyboard_shortcuts.types.key import Key
 
 
-class KeysEnum(Enum):
+class Keys(Enum):
     # fmt: off
     KEY_0 = Key(label='0', character='0', ascii_code=48, mac_key_code=29, layout_dependence='ANSI-US')
     KEY_1 = Key(label='1', character='1', ascii_code=49, mac_key_code=18, layout_dependence='ANSI-US')
@@ -148,9 +148,9 @@ class KeysEnum(Enum):
     # fmt: on
 
     @classmethod
-    def find_key_by_mac_key_code(cls, mac_key_code) -> Self | None:
+    def find_key_by_mac_key_code(cls, mac_key_code) -> Keys | None:
         if matched := list(
-            filter(lambda ke: ke.value.mac_key_code == int(mac_key_code), KeysEnum)
+            filter(lambda ke: ke.value.mac_key_code == int(mac_key_code), Keys)
         ):
             return matched[0].value
         else:

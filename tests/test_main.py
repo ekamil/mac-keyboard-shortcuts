@@ -1,8 +1,10 @@
 """Test cases for the __main__ module."""
+
 import pytest
 from click.testing import CliRunner
 
 from mac_keyboard_shortcuts import __main__
+from mac_keyboard_shortcuts.api import *  # noqa
 
 
 @pytest.fixture

@@ -1,5 +1,5 @@
+from __future__ import annotations
 from enum import IntEnum
-from typing import Self
 
 
 class Modifiers(IntEnum):
@@ -23,7 +23,7 @@ class Modifiers(IntEnum):
     # fmt: on
 
     @classmethod
-    def find_constituent_flags(cls, v: int) -> list[Self]:
+    def find_constituent_flags(cls, v: int) -> list[Modifiers]:
         flags = sorted(cls, key=lambda c: c.value, reverse=False)
         result_flags = [flag for flag in flags if v & flag.value]
         return result_flags

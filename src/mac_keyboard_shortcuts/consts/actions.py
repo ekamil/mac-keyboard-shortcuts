@@ -1,5 +1,6 @@
+from __future__ import annotations
 from enum import Enum
-from typing import Self
+from typing import Optional
 
 
 class Actions(Enum):
@@ -81,7 +82,7 @@ class Actions(Enum):
     # fmt: on
 
     @classmethod
-    def get_by_value(cls, action_number: int | str) -> Self | None:
+    def get_by_value(cls, action_number: int | str) -> Optional[Actions]:
         if match := list(filter(lambda a: str(a.value) == str(action_number), Actions)):
             return match[0]
         else:

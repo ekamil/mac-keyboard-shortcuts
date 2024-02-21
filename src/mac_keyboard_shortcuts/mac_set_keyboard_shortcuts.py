@@ -3,7 +3,7 @@ import os.path
 
 from mac_keyboard_shortcuts.api import APPLE_SYMBOLIC_HOT_KEYS, PLIST_PATH_S
 from mac_keyboard_shortcuts.api import Actions
-from mac_keyboard_shortcuts.api import KeysEnum
+from mac_keyboard_shortcuts.api import Keys
 from mac_keyboard_shortcuts.api import Modifiers
 from mac_keyboard_shortcuts.api import ShortcutEntry
 from mac_keyboard_shortcuts.api import plist_writer
@@ -56,7 +56,7 @@ def set_my_shortcuts(new_entries: dict, *, alfred=True, contexts=True) -> None:
     with same(Actions.kCGSHotKeyFocusApplicationWindow) as k:
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_GRAVE.value,
+            key=Keys.KEY_GRAVE.value,
             modifiers=(
                 [Modifiers.command, Modifiers.option]
                 if contexts
@@ -66,73 +66,73 @@ def set_my_shortcuts(new_entries: dict, *, alfred=True, contexts=True) -> None:
     with same(Actions.kCGSHotKeyScreenshot) as k:
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_3.value,
+            key=Keys.KEY_3.value,
             modifiers=[Modifiers.command, Modifiers.shift],
         )
     with same(Actions.kCGSHotKeyScreenshotRegion) as k:
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_4.value,
+            key=Keys.KEY_4.value,
             modifiers=[Modifiers.command, Modifiers.shift],
         )
     with same(Actions.screenshot_and_recording_options) as k:
         # not sure what this is
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_5.value,
+            key=Keys.KEY_5.value,
             modifiers=[Modifiers.shift, Modifiers.command],
         )
     with same(Actions.kCGSHotKeyExposeDesktopsSlow) as k:
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_D.value,
+            key=Keys.KEY_D.value,
             modifiers=[Modifiers.shift, Modifiers.command],
             enabled=False,
         )
     with same(Actions.kCGSHotKeyExposeAllWindows) as k:
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_F10.value,
+            key=Keys.KEY_F10.value,
             modifiers=[Modifiers.function],
         )
     with same(Actions.kCGSHotKeyExposeAllWindowsSlow) as k:
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_F10.value,
+            key=Keys.KEY_F10.value,
             modifiers=[Modifiers.shift, Modifiers.function],
         )
     with same(Actions.kCGSHotKeySpaceLeft) as k:
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_LEFTARROW.value,
+            key=Keys.KEY_LEFTARROW.value,
             modifiers=[Modifiers.control],
         )
     with same(Actions.kCGSHotKeySpaceLeftSlow) as k:
         # not sure what this is
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_LEFTARROW.value,
+            key=Keys.KEY_LEFTARROW.value,
             modifiers=[Modifiers.control, Modifiers.option],
         )
     with same(Actions.kCGSHotKeySpaceRight) as k:
         # not sure what this is
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_RIGHTARROW.value,
+            key=Keys.KEY_RIGHTARROW.value,
             modifiers=[Modifiers.control],
         )
     with same(Actions.kCGSHotKeySpaceRightSlow) as k:
         # not sure what this is
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_RIGHTARROW.value,
+            key=Keys.KEY_RIGHTARROW.value,
             modifiers=[Modifiers.control, Modifiers.option],
         )
     with same(Actions.kCGSHotKeySpotlightSearchField) as k:
         # not sure what this is
         new_entries[k.value] = ShortcutEntry(
             action=k.value,
-            key=KeysEnum.KEY_SPACE.value,
+            key=Keys.KEY_SPACE.value,
             modifiers=[Modifiers.command],
             enabled=not alfred,  # Change if not using alfred
         )
