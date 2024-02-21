@@ -4,7 +4,7 @@ import shutil as sh
 import subprocess
 from pathlib import Path
 from pprint import pprint
-from typing import Union, Generator
+from typing import Union, Generator, Any
 
 from mac_keyboard_shortcuts.consts.apple import APPLE_SYMBOLIC_HOT_KEYS
 from mac_keyboard_shortcuts.consts.consts import KEY_SHORT_FORMAT_WIDTH
@@ -27,7 +27,7 @@ def plist_writer(
     replace: bool = False,
     validate: bool = False,
     print_diff: bool = False,
-) -> Generator[SymbolicHotKeys, None, None]:
+) -> Generator[dict[str, Any], None, None]:
     """
     Context manager to open, read, validate and write a .plist file.
     Yields a dictionary representing the data inside plist file. Mutate this dict to update settings.
