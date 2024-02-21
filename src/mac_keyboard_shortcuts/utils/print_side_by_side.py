@@ -67,9 +67,9 @@ def side_by_side(
         ] + list(zip_pairs)
 
     lines = []
-    for left, right in zip_pairs:
-        left = left or ""
-        right = right or ""
+    for left, right in zip_pairs:  # type:ignore
+        left = left or ""  # type:ignore
+        right = right or ""  # type:ignore
         line = "{}{}{}{}".format(
             left, (" " * max(0, mid_width - len(left))), separator, right
         )

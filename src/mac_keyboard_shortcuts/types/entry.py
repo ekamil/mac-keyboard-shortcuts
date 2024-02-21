@@ -46,7 +46,7 @@ class HotKeyEntry:
             (
                 f"{self.action:3d}",
                 " on" if self.enabled else "off",
-                f"{key_spec:<50}",
+                f"{key_spec:<30}",
                 f"{self.modifiers_value:10d}",
                 f"{self.action_name:<40}",
             )

@@ -2,17 +2,19 @@ import contextlib
 import plistlib as pl
 import shutil as sh
 import subprocess  # noqa: S404
+import tempfile
 from pathlib import Path
 from pprint import pprint
 from typing import Any
 from typing import Generator
+from typing import Iterable
 from typing import Union
 
-from mac_keyboard_shortcuts.consts.apple import APPLE_SYMBOLIC_HOT_KEYS
 from mac_keyboard_shortcuts.consts.consts import KEY_SHORT_FORMAT_WIDTH
-from mac_keyboard_shortcuts.types.apple import SymbolicHotKeys
 from mac_keyboard_shortcuts.types.entry import HotKeyEntry
 from mac_keyboard_shortcuts.utils.diff_side_by_side import better_diff
+from mac_keyboard_shortcuts.utils.entries_mutators import _turn_off_all_shortcuts
+from mac_keyboard_shortcuts.utils.plist_reading import parse_plist_data
 
 
 def print_plist(path: Union[str, Path]) -> None:
@@ -85,25 +87,44 @@ def diff_hotkeys_plists(
     """
     print(f"Comparing lists at {old} -> {new}")
 
-    def normalized_list(data: SymbolicHotKeys) -> list[str]:
-        _data = [HotKeyEntry.parse(k, v) for k, v in data.items()]
-        _data.sort(key=lambda e: e.action)
-        return list(map(lambda e: e.as_short_str(), _data))
-
     with open(old, "rb") as fd:
         old_data = pl.load(fd, fmt=pl.FMT_BINARY, dict_type=dict)
-        old_parsed = normalized_list(old_data[APPLE_SYMBOLIC_HOT_KEYS])
+        old_parsed = parse_plist_data(old_data)
     with open(new, "rb") as fd:
         new_data = pl.load(fd, fmt=pl.FMT_BINARY, dict_type=dict)
-        new_parsed = normalized_list(new_data[APPLE_SYMBOLIC_HOT_KEYS])
+        new_parsed = parse_plist_data(new_data)
+    diff_hotkeys_definitions(
+        old_parsed,
+        new_parsed,
+        width,
+        print_common_lines,
+        use_colours,
+    )
+
+
+def diff_hotkeys_definitions(
+    old: Iterable[HotKeyEntry],
+    new: Iterable[HotKeyEntry],
+    width: int = 2 * KEY_SHORT_FORMAT_WIDTH,
+    print_common_lines: bool = True,
+    use_colours: bool = True,
+) -> None:
+    def normalized_list(data: Iterable[HotKeyEntry]) -> list[str]:
+        # _data = [HotKeyEntry.parse(k, v) for k, v in data.items()]
+        # _data.sort(key=lambda e: e.action)
+        return list(map(lambda e: e.as_short_str(), data))
+
+    old_parsed = normalized_list(old)
+    new_parsed = normalized_list(new)
+
     if old_parsed == new_parsed:
         print("plists are identical")
         return
 
     diff = better_diff(
-        left_title=str(old),
+        left_title="Left",
         left=old_parsed,
-        right_title=str(new),
+        right_title="Right",
         right=new_parsed,
         width=width,
         print_common_lines=print_common_lines,
@@ -111,3 +132,27 @@ def diff_hotkeys_plists(
     )
     for d in diff:
         print(d)
+
+
+def show_enabled_impl(plist_path: str, no_color: bool, validate: bool) -> None:
+    with open(plist_path, "rb") as fd:
+        data = pl.load(fd, fmt=pl.FMT_BINARY, dict_type=dict)
+    old = parse_plist_data(data)
+    new = _turn_off_all_shortcuts(old)
+
+    diff_hotkeys_definitions(
+        list(new),
+        list(old),
+        use_colours=not no_color,
+        print_common_lines=False,
+    )
+
+    if validate:
+        with tempfile.NamedTemporaryFile(mode="wb") as tmp:
+            pl.dump(data, tmp, fmt=pl.FMT_BINARY, sort_keys=True, skipkeys=False)
+            tmp.flush()
+            exit_code = subprocess.call(["plutil", tmp.name])  # noqa: S603,S607
+            if exit_code != 0:
+                raise RuntimeError(
+                    "plutil couldn't validate the new data. Please don't use it on real config files!"
+                )
