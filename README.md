@@ -22,6 +22,7 @@
 Reads, modifies and writes the plist with keyboard shortcuts.
 
 Kudos to all the people who compiled data sources I'm using here:
+
 - https://gist.github.com/mkhl/455002#file-ctrl-f1-c-L12
 - https://gist.github.com/jimratliff/227088cc936065598bedfd91c360334e
 - https://gist.github.com/stephancasas/74c4621e2492fb875f0f42778d432973

@@ -1,4 +1,6 @@
-from typing import TypedDict, Optional
+from typing import Optional
+from typing import TypedDict
+
 
 """
 Describes the model of a single key-shortcut entry, i.e. the part after "7":

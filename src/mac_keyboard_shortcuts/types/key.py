@@ -1,11 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from typing import Optional
-    from typing import Self
 
 from mac_keyboard_shortcuts.consts.apple import NON_ASCII
 
@@ -13,7 +8,7 @@ from mac_keyboard_shortcuts.consts.apple import NON_ASCII
 @dataclass(frozen=True)
 class Key:
     label: str
-    character: Optional[str]
+    character: str | None
     ascii_code: int
     mac_key_code: int
     layout_dependence: str

@@ -1,6 +1,6 @@
 from __future__ import annotations
+
 from enum import Enum
-from typing import Optional
 
 from mac_keyboard_shortcuts.types.key import Key
 
@@ -123,7 +123,7 @@ class Keys(Key, Enum):
     # fmt: on
 
     @classmethod
-    def find_key_by_mac_key_code(cls, mac_key_code: int) -> Optional[Key]:
+    def find_key_by_mac_key_code(cls, mac_key_code: int) -> Key | None:
         if matched := list(
             filter(lambda ke: ke.mac_key_code == int(mac_key_code), Keys)
         ):

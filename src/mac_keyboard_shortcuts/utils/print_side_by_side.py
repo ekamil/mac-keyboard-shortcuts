@@ -4,6 +4,9 @@ import textwrap
 import typing
 
 
+DEFAULT_SEPARATOR = " | "
+
+
 def side_by_side(
     left: typing.List[str],
     right: typing.List[str],
@@ -36,7 +39,6 @@ def side_by_side(
     :rtype: typing.Union[str, typing.List[str]]
     """
 
-    DEFAULT_SEPARATOR = " | "
     separator = separator or DEFAULT_SEPARATOR
 
     mid_width = (width - len(separator) - (1 - width % 2)) // 2
@@ -65,10 +67,12 @@ def side_by_side(
         ] + list(zip_pairs)
 
     lines = []
-    for l, r in zip_pairs:
-        l = l or ""
-        r = r or ""
-        line = "{}{}{}{}".format(l, (" " * max(0, mid_width - len(l))), separator, r)
+    for left, right in zip_pairs:
+        left = left or ""
+        right = right or ""
+        line = "{}{}{}{}".format(
+            left, (" " * max(0, mid_width - len(left))), separator, right
+        )
         lines.append(line)
 
     if as_string:

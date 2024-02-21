@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
 
 from mac_keyboard_shortcuts.consts.actions import Actions
-from mac_keyboard_shortcuts.consts.apple import *
+from mac_keyboard_shortcuts.consts.apple import NON_ASCII
+from mac_keyboard_shortcuts.consts.apple import STANDARD
 from mac_keyboard_shortcuts.consts.consts import MISSING
 from mac_keyboard_shortcuts.consts.keys import Keys
 from mac_keyboard_shortcuts.consts.modifiers import Modifiers
@@ -30,7 +30,7 @@ class HotKeyEntry:
                 "parameters": (
                     self.key.ascii_code,
                     self.key.mac_key_code,
-                    sum((m.value for m in self.modifiers)),
+                    sum(m.value for m in self.modifiers),
                 ),
                 "type": self.type_,
             },
@@ -44,11 +44,11 @@ class HotKeyEntry:
         key_spec = "+".join([m.name for m in self.modifiers] + [self.key.label])
         return " ".join(
             (
-                "{0:3d}".format(self.action),
+                f"{self.action:3d}",
                 " on" if self.enabled else "off",
-                "{:<50}".format(key_spec),
-                "{0:10d}".format(self.modifiers_value),
-                "{:<40}".format(self.action_name),
+                f"{key_spec:<50}",
+                f"{self.modifiers_value:10d}",
+                f"{self.action_name:<40}",
             )
         )
 

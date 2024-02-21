@@ -1,4 +1,5 @@
 """Sphinx configuration."""
+
 project = "Mac Keyboard Shortcuts"
 author = "Kamil E"
 copyright = "2024, Kamil E"

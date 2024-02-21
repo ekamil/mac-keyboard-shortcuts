@@ -5,6 +5,7 @@ import typing
 
 from mac_keyboard_shortcuts.utils.print_side_by_side import side_by_side
 
+
 try:
     from termcolor import colored  # type: ignore
 except ImportError:

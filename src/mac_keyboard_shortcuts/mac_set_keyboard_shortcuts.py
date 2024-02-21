@@ -3,13 +3,15 @@ import os.path
 from operator import attrgetter
 from typing import Iterable
 
-from mac_keyboard_shortcuts.api import APPLE_SYMBOLIC_HOT_KEYS, PLIST_PATH_S
+from mac_keyboard_shortcuts.api import APPLE_SYMBOLIC_HOT_KEYS
+from mac_keyboard_shortcuts.api import PLIST_PATH_S
 from mac_keyboard_shortcuts.api import Actions
 from mac_keyboard_shortcuts.api import HotKeyEntry
 from mac_keyboard_shortcuts.api import Keys
 from mac_keyboard_shortcuts.api import Modifiers
 from mac_keyboard_shortcuts.api import plist_writer
 from mac_keyboard_shortcuts.types.apple import SymbolicHotKeys
+
 
 PLIST_PATH = os.path.expanduser(PLIST_PATH_S)
 
@@ -58,7 +60,7 @@ def _print_current(
     entries: Iterable[HotKeyEntry], print_current: bool = False
 ) -> Iterable[HotKeyEntry]:
     if not print_current:
-        return entries
+        yield from entries
     print("Current values:")
     for value in entries:
         if value.enabled:
