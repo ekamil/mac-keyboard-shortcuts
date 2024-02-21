@@ -1,14 +1,15 @@
 import csv
+from dataclasses import astuple
 from enum import Enum
 from io import StringIO
-from typing import Type
+from typing import Type, Optional
 
 import requests
 
 from mac_keyboard_shortcuts.types.key import Key
 
 
-def download_key_definitions(print_code=True) -> Type[Enum]:
+def download_key_definitions(print_code: bool = True) -> Optional[Type[Enum]]:
     """
     Get the TSV from https://gist.github.com/jimratliff/227088cc936065598bedfd91c360334e
     and load this as key definitions.
@@ -22,7 +23,7 @@ def download_key_definitions(print_code=True) -> Type[Enum]:
     content = StringIO(response.text)
     reader = csv.reader(content, delimiter="\t")  # Specify the tab delimiter
     # Skip the header if needed
-    header = next(reader)
+    next(reader)
     # Read the rest of the rows
     attributes = {}
     _properties = []
@@ -41,11 +42,14 @@ def download_key_definitions(print_code=True) -> Type[Enum]:
         raise ValueError("Some attributes were missed - debug me!")
     if len(set([k.mac_key_code for k in attributes.values()])) != len(attributes):
         raise ValueError("Duplicate Mac key codes - debug me!")
-    new_enumeration = Enum("Keys", attributes)
     if print_code:
         print("class Keys(Key, Enum):")
         print("    # fmt: off")
         for name, value in attributes.items():
-            print(f"    {name} = {value}")
+            print(f"    {name} = {astuple(value)}")
         print("    # fmt: on")
-    return new_enumeration
+        return None
+    else:
+        new_enumeration: Type[Enum] = Enum("Keys", attributes)  # type: ignore
+        # mypy can't determine the type when I'm not using a dict literal
+        return new_enumeration

@@ -8,7 +8,7 @@ from typing import Union
 
 from mac_keyboard_shortcuts.consts.apple import APPLE_SYMBOLIC_HOT_KEYS
 from mac_keyboard_shortcuts.consts.consts import KEY_SHORT_FORMAT_WIDTH
-from mac_keyboard_shortcuts.types.entry import ShortcutEntry
+from mac_keyboard_shortcuts.types.entry import HotKeyEntry
 from mac_keyboard_shortcuts.utils.diff_side_by_side import better_diff
 
 
@@ -79,7 +79,7 @@ def diff_plists(
     print(f"Comparing lists at {old} -> {new}")
 
     def normalized_list(data: dict[str, dict]) -> list[str]:
-        _data = [ShortcutEntry.parse(k, v) for k, v in data.items()]
+        _data = [HotKeyEntry.parse(k, v) for k, v in data.items()]
         _data.sort(key=lambda e: e.action)
         return list(map(lambda e: e.as_short_str(), _data))
 

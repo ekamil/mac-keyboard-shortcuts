@@ -1,17 +1,19 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 from mac_keyboard_shortcuts.consts.actions import Actions
 from mac_keyboard_shortcuts.consts.apple import *
 from mac_keyboard_shortcuts.consts.consts import MISSING
 from mac_keyboard_shortcuts.consts.keys import Keys
 from mac_keyboard_shortcuts.consts.modifiers import Modifiers
+from mac_keyboard_shortcuts.types.apple import SymbolicHotKey
 from mac_keyboard_shortcuts.types.key import Key
 
 
 @dataclass
-class ShortcutEntry:
+class HotKeyEntry:
     action: int
     key: Key
     modifiers: list[Modifiers]
@@ -21,11 +23,11 @@ class ShortcutEntry:
     managed: bool = True
     action_name: str = MISSING
 
-    def as_item(self) -> tuple[str, dict]:
+    def as_item(self) -> tuple[str, SymbolicHotKey]:
         return str(self.action), {
             "enabled": self.enabled,
-            VALUE: {
-                PARAMETERS: [
+            "value": {
+                "parameters": [
                     self.key.ascii_code,
                     self.key.mac_key_code,
                     sum((m.value for m in self.modifiers)),
@@ -51,7 +53,7 @@ class ShortcutEntry:
         )
 
     @classmethod
-    def parse(cls, action_number: str, entry_dict: dict) -> ShortcutEntry:
+    def parse(cls, action_number: str, entry_dict: SymbolicHotKey) -> HotKeyEntry:
         managed = True
         action = Actions.get_by_value(action_number)
         if action:

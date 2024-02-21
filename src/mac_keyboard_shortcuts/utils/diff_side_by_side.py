@@ -6,10 +6,10 @@ import typing
 from mac_keyboard_shortcuts.utils.print_side_by_side import side_by_side
 
 try:
-    from termcolor import colored
+    from termcolor import colored  # type: ignore
 except ImportError:
 
-    def colored(text: str, *args, **kwargs) -> str:
+    def colored(text: str, color: str, on_color: str | None = None) -> str:
         return text
 
 
@@ -53,7 +53,7 @@ def better_diff(
 
     def _c(text: str, color: str, on_color: str | None = None) -> str:
         if use_colours:
-            return colored(text, color, on_color)
+            return colored(text, color, on_color)  # type: ignore
         else:
             return text
 

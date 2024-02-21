@@ -45,7 +45,7 @@ def side_by_side(
         width=mid_width, break_long_words=False, replace_whitespace=False
     )
 
-    def reflow(lines):
+    def reflow(lines: list[str]) -> list[str]:
         wrapped_lines = list(map(tw.wrap, lines))
         wrapped_lines_with_linebreaks = [
             [""] if len(wls) == 0 else wls for wls in wrapped_lines
@@ -55,7 +55,7 @@ def side_by_side(
     left = reflow(left)
     right = reflow(right)
 
-    zip_pairs = itertools.zip_longest(left, right)
+    zip_pairs = list(itertools.zip_longest(left, right))
     if left_title is not None or right_title is not None:
         left_title = left_title or ""
         right_title = right_title or ""

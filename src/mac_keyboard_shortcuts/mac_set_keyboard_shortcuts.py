@@ -5,7 +5,7 @@ from mac_keyboard_shortcuts.api import APPLE_SYMBOLIC_HOT_KEYS, PLIST_PATH_S
 from mac_keyboard_shortcuts.api import Actions
 from mac_keyboard_shortcuts.api import Keys
 from mac_keyboard_shortcuts.api import Modifiers
-from mac_keyboard_shortcuts.api import ShortcutEntry
+from mac_keyboard_shortcuts.api import HotKeyEntry
 from mac_keyboard_shortcuts.api import plist_writer
 from mac_keyboard_shortcuts.utils.helpers import same
 
@@ -19,7 +19,7 @@ def my_config_or_passthrough(*, print_current=False, backup=True, replace=False)
     """
     with plist_writer(path=PLIST_PATH, backup=backup, replace=replace) as plist_data:
         entries = plist_data[APPLE_SYMBOLIC_HOT_KEYS]
-        parsed = [ShortcutEntry.parse(key, value) for key, value in entries.items()]
+        parsed = [HotKeyEntry.parse(key, value) for key, value in entries.items()]
         parsed = sorted(parsed, key=lambda se: se.action)
         new_entries = {se.action: se for se in parsed}
 
@@ -54,7 +54,7 @@ def _print_current(new_entries):
 
 def set_my_shortcuts(new_entries: dict, *, alfred=True, contexts=True) -> None:
     with same(Actions.kCGSHotKeyFocusApplicationWindow) as k:
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_GRAVE.value,
             modifiers=(
@@ -64,73 +64,73 @@ def set_my_shortcuts(new_entries: dict, *, alfred=True, contexts=True) -> None:
             ),
         )
     with same(Actions.kCGSHotKeyScreenshot) as k:
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_3.value,
             modifiers=[Modifiers.command, Modifiers.shift],
         )
     with same(Actions.kCGSHotKeyScreenshotRegion) as k:
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_4.value,
             modifiers=[Modifiers.command, Modifiers.shift],
         )
     with same(Actions.screenshot_and_recording_options) as k:
         # not sure what this is
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_5.value,
             modifiers=[Modifiers.shift, Modifiers.command],
         )
     with same(Actions.kCGSHotKeyExposeDesktopsSlow) as k:
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_D.value,
             modifiers=[Modifiers.shift, Modifiers.command],
             enabled=False,
         )
     with same(Actions.kCGSHotKeyExposeAllWindows) as k:
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_F10.value,
             modifiers=[Modifiers.function],
         )
     with same(Actions.kCGSHotKeyExposeAllWindowsSlow) as k:
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_F10.value,
             modifiers=[Modifiers.shift, Modifiers.function],
         )
     with same(Actions.kCGSHotKeySpaceLeft) as k:
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_LEFTARROW.value,
             modifiers=[Modifiers.control],
         )
     with same(Actions.kCGSHotKeySpaceLeftSlow) as k:
         # not sure what this is
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_LEFTARROW.value,
             modifiers=[Modifiers.control, Modifiers.option],
         )
     with same(Actions.kCGSHotKeySpaceRight) as k:
         # not sure what this is
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_RIGHTARROW.value,
             modifiers=[Modifiers.control],
         )
     with same(Actions.kCGSHotKeySpaceRightSlow) as k:
         # not sure what this is
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_RIGHTARROW.value,
             modifiers=[Modifiers.control, Modifiers.option],
         )
     with same(Actions.kCGSHotKeySpotlightSearchField) as k:
         # not sure what this is
-        new_entries[k.value] = ShortcutEntry(
+        new_entries[k.value] = HotKeyEntry(
             action=k.value,
             key=Keys.KEY_SPACE.value,
             modifiers=[Modifiers.command],

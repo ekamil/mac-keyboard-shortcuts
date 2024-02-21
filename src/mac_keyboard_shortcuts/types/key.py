@@ -19,7 +19,7 @@ class Key:
     layout_dependence: str
 
     @classmethod
-    def no_op(cls) -> Self:
+    def no_op(cls) -> Key:
         return Key(
             label="Missing",
             character="-",
@@ -29,7 +29,7 @@ class Key:
         )
 
     @classmethod
-    def unknown(cls, *, ascii_code: int, mac_key_code: int) -> Self:
+    def unknown(cls, *, ascii_code: int, mac_key_code: int) -> Key:
         if mac_key_code == NON_ASCII:
             return cls.no_op()
         return Key(
