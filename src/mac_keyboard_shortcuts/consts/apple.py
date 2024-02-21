@@ -1,8 +1,4 @@
-from typing import Literal
-
 STANDARD = "standard"
-PARAMETERS = "parameters"
-VALUE: Literal["value"] = "value"
 APPLE_SYMBOLIC_HOT_KEYS = "AppleSymbolicHotKeys"
 NON_ASCII = 65535
 

@@ -125,8 +125,8 @@ class Keys(Key, Enum):
     @classmethod
     def find_key_by_mac_key_code(cls, mac_key_code: int) -> Optional[Key]:
         if matched := list(
-            filter(lambda ke: ke.value.mac_key_code == int(mac_key_code), Keys)
+            filter(lambda ke: ke.mac_key_code == int(mac_key_code), Keys)
         ):
-            return matched[0].value
+            return matched[0]
         else:
             return None

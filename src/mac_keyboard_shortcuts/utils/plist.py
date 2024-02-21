@@ -4,21 +4,19 @@ import shutil as sh
 import subprocess
 from pathlib import Path
 from pprint import pprint
-from typing import Union
+from typing import Union, Generator
 
 from mac_keyboard_shortcuts.consts.apple import APPLE_SYMBOLIC_HOT_KEYS
 from mac_keyboard_shortcuts.consts.consts import KEY_SHORT_FORMAT_WIDTH
+from mac_keyboard_shortcuts.types.apple import SymbolicHotKeys
 from mac_keyboard_shortcuts.types.entry import HotKeyEntry
 from mac_keyboard_shortcuts.utils.diff_side_by_side import better_diff
 
 
-def print_plist(path: Union[str, Path]) -> dict[str, dict]:
+def print_plist(path: Union[str, Path]) -> None:
     with open(path, "rb") as fd:
         data = pl.load(fd, fmt=pl.FMT_BINARY, dict_type=dict)
-    print(data.keys())
-    print(data[APPLE_SYMBOLIC_HOT_KEYS].keys())
-    pprint(data[APPLE_SYMBOLIC_HOT_KEYS]["32"])
-    return data[APPLE_SYMBOLIC_HOT_KEYS]
+    pprint(data)
 
 
 @contextlib.contextmanager
@@ -29,13 +27,13 @@ def plist_writer(
     replace: bool = False,
     validate: bool = False,
     print_diff: bool = False,
-) -> None:
+) -> Generator[SymbolicHotKeys, None, None]:
     """
     Context manager to open, read, validate and write a .plist file.
     Yields a dictionary representing the data inside plist file. Mutate this dict to update settings.
     By default, this function won't actually update the file, but create a new one next to it with suffix .new.
     This new file will be validated with `plutil` system command.
-    You can change this behaviour usign `replace` flag.
+    You can change this behaviour using `replace` flag.
 
 
     Args:
@@ -57,7 +55,7 @@ def plist_writer(
         # write and move patter to ensure that we can dump the data
         pl.dump(data, fd, fmt=pl.FMT_BINARY, sort_keys=True, skipkeys=False)
     if print_diff:
-        diff_plists(old=path, new=new_file)
+        diff_hotkeys_plists(old=path, new=new_file)
     if validate:
         exit_code = subprocess.call(["plutil", new_file])
         if exit_code != 0:
@@ -68,17 +66,19 @@ def plist_writer(
         sh.move(new_file, path)
 
 
-def diff_plists(
+def diff_hotkeys_plists(
     old: Union[Path, str],
     new: Union[Path, str],
     width: int = 2 * KEY_SHORT_FORMAT_WIDTH,
     print_common_lines: bool = True,
     use_colours: bool = True,
 ) -> None:
-    """ """
+    """
+    Compares and prints a diff of two .plist files, assuming they both contain Hotkeys definitions.
+    """
     print(f"Comparing lists at {old} -> {new}")
 
-    def normalized_list(data: dict[str, dict]) -> list[str]:
+    def normalized_list(data: SymbolicHotKeys) -> list[str]:
         _data = [HotKeyEntry.parse(k, v) for k, v in data.items()]
         _data.sort(key=lambda e: e.action)
         return list(map(lambda e: e.as_short_str(), _data))

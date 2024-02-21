@@ -30,3 +30,7 @@ class SymbolicHotKey(TypedDict):
 
 
 SymbolicHotKeys = dict[str, SymbolicHotKey]
+
+
+class SymbolicHotKeysPlist(TypedDict):
+    AppleSymbolicHotKeys: dict[str, SymbolicHotKey]

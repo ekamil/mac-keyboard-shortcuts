@@ -4,7 +4,7 @@ from mac_keyboard_shortcuts.consts.keys import Keys
 from mac_keyboard_shortcuts.consts.modifiers import Modifiers
 from mac_keyboard_shortcuts.types.entry import HotKeyEntry
 from mac_keyboard_shortcuts.types.key import Key
-from mac_keyboard_shortcuts.utils.plist import plist_writer, diff_plists
+from mac_keyboard_shortcuts.utils.plist import plist_writer, diff_hotkeys_plists
 
 __all__ = [
     "APPLE_SYMBOLIC_HOT_KEYS",
@@ -15,5 +15,5 @@ __all__ = [
     "HotKeyEntry",
     "Key",
     "plist_writer",
-    "diff_plists",
+    "diff_hotkeys_plists",
 ]

@@ -27,11 +27,11 @@ class HotKeyEntry:
         return str(self.action), {
             "enabled": self.enabled,
             "value": {
-                "parameters": [
+                "parameters": (
                     self.key.ascii_code,
                     self.key.mac_key_code,
                     sum((m.value for m in self.modifiers)),
-                ],
+                ),
                 "type": self.type_,
             },
         }
@@ -54,16 +54,17 @@ class HotKeyEntry:
 
     @classmethod
     def parse(cls, action_number: str, entry_dict: SymbolicHotKey) -> HotKeyEntry:
-        managed = True
         action = Actions.get_by_value(action_number)
         if action:
             action_value = action.value
             action_name = action.name
+            managed = True
         else:
             action_value = int(action_number)
             action_name = MISSING
             managed = False
-        if VALUE not in entry_dict:  # no key assigned - so probably it's also off
+        value_ = entry_dict.get("value")
+        if value_ is None:  # no key assigned - so probably it's also off
             return cls(
                 action=action_value,
                 action_name=action_name,
@@ -73,10 +74,10 @@ class HotKeyEntry:
                 type_=STANDARD,
                 managed=False,
             )
-        modifiers_value = entry_dict[VALUE][PARAMETERS][2]
+        modifiers_value = value_["parameters"][2]
         modifiers = Modifiers.find_constituent_flags(modifiers_value)
-        ascii_code = entry_dict[VALUE][PARAMETERS][0]
-        mac_key_code = entry_dict[VALUE][PARAMETERS][1]
+        ascii_code = value_["parameters"][0]
+        mac_key_code = value_["parameters"][1]
         key_sequence = Keys.find_key_by_mac_key_code(mac_key_code)
         if not key_sequence:
             key_sequence = Key.unknown(ascii_code=ascii_code, mac_key_code=mac_key_code)
@@ -89,6 +90,6 @@ class HotKeyEntry:
             modifiers=modifiers,
             modifiers_value=modifiers_value,
             enabled=bool(entry_dict["enabled"]),
-            type_=entry_dict[VALUE]["type"],
+            type_=value_["type"],
             managed=managed,
         )
