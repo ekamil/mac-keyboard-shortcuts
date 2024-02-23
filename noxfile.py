@@ -161,7 +161,11 @@ def mypy(session: Session) -> None:
 @session(python=python_versions)
 def tests(session: Session) -> None:
     """Run the test suite."""
-    session.poetry.installroot(extras=["authoring", "color"])
+    session.poetry.installroot(
+        extras=[
+            "authoring",
+        ]
+    )
     session.install("pytest", "pygments")
     session.run("pytest", *session.posargs)
 
@@ -169,7 +173,11 @@ def tests(session: Session) -> None:
 @session(python=python_versions[0])
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
-    session.poetry.installroot(extras=["authoring", "color"])
+    session.poetry.installroot(
+        extras=[
+            "authoring",
+        ]
+    )
     session.install("pytest", "typeguard", "pygments")
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 

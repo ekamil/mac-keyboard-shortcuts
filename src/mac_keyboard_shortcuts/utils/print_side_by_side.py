@@ -11,11 +11,10 @@ def side_by_side(
     left: typing.List[str],
     right: typing.List[str],
     width: int = 78,
-    as_string: bool = False,
     separator: typing.Optional[str] = " | ",
     left_title: typing.Optional[str] = None,
     right_title: typing.Optional[str] = None,
-) -> typing.Union[str, typing.List[str]]:
+) -> typing.List[str]:
     """Returns either the list of lines, or string of lines, that results from
     merging the two lists side-by-side.
 
@@ -35,8 +34,8 @@ def side_by_side(
     :param right_title: Title to place on the right side, defaults to None
     :type right_title: typing.Optional[str], optional
 
-    :return: Lines or text of the merged side-by-side output.
-    :rtype: typing.Union[str, typing.List[str]]
+    :return: Lines of the merged side-by-side output.
+    :rtype: typing.List[str]
     """
 
     separator = separator or DEFAULT_SEPARATOR
@@ -74,8 +73,5 @@ def side_by_side(
             left, (" " * max(0, mid_width - len(left))), separator, right
         )
         lines.append(line)
-
-    if as_string:
-        return "\n".join(lines)
 
     return lines

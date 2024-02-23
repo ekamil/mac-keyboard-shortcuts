@@ -1,27 +1,133 @@
 """Command-line interface."""
 
 import os
-import sys
-from importlib.util import find_spec
 from pathlib import Path
 
 import click
 
-from mac_keyboard_shortcuts.consts.apple import PLIST_PATH_S
-from mac_keyboard_shortcuts.utils.authoring import download_key_definitions
-from mac_keyboard_shortcuts.utils.plist import show_enabled_impl
+from mac_keyboard_shortcuts.usecases.authoring import download_key_definitions
+from mac_keyboard_shortcuts.usecases.diff_plist_files import diff_plists_file_impl
+from mac_keyboard_shortcuts.usecases.print_enabled import print_enabled_impl
+from mac_keyboard_shortcuts.usecases.print_plist_file import print_plist_file_impl
+
+
+HOTKEY_PLIST_DEFAULT_PATH = os.path.expanduser(
+    "~/Library/Preferences/com.apple.symbolichotkeys.plist"
+)
 
 
 @click.group()
 @click.version_option()
-def main() -> None:
-    """Mac Keyboard Shortcuts.
+@click.option("--debug", default=False, help="More logging")
+@click.pass_context
+def main(ctx: click.Context, debug: bool) -> None:
+    """Mac Keyboard Shortcuts."""
+    ctx.ensure_object(dict)
+    ctx.obj["debug"] = debug
 
-    mac-keyboard-shortcuts print [FILE1]
-    mac-keyboard-shortcuts diff FILE1 FILE2
-    mac-keyboard-shortcuts write-using-py PYTHON_FILE
-    mac-keyboard-shortcuts print-key-defs
+
+@main.command()
+@click.argument(
+    "plist-path",
+    type=click.Path(exists=True),
+    default=HOTKEY_PLIST_DEFAULT_PATH,
+    nargs=1,
+)
+def print_plist(plist_path: str) -> None:
     """
+    Prints hotkeys read from a PLIST_PATH
+    """
+    print_plist_file_impl(plist_path)
+
+
+@main.command()
+@click.argument(
+    "plist-path-old",
+    type=click.Path(exists=True),
+    default=HOTKEY_PLIST_DEFAULT_PATH,
+    nargs=1,
+)
+@click.argument(
+    "plist-path-new",
+    type=click.Path(exists=True),
+    nargs=1,
+)
+@click.option(
+    "--print-common-lines/--no-print-common-lines",
+    default=False,
+    help="Prints lines that don't differ",
+)
+@click.pass_context
+def diff_plists(
+    ctx: click.Context,
+    plist_path_old: Path,
+    plist_path_new: Path,
+    print_common_lines: bool,
+) -> None:
+    """
+    Diffs two hotkey files, PLIST-PATH-OLD (left) with PLIST-PATH-NEW
+    """
+    for d in diff_plists_file_impl(
+        plist_path_old,
+        plist_path_new,
+        print_common_lines=print_common_lines,
+    ):
+        click.echo(d)
+
+
+@main.command()
+@click.argument(
+    "plist-path",
+    type=click.Path(exists=True),
+    default=HOTKEY_PLIST_DEFAULT_PATH,
+)
+@click.argument(
+    "python",
+    type=click.Path(exists=True),
+)
+@click.option("--dry-run", default=False, help="Only prints a diff")
+@click.option(
+    "--validate/--no-validate",
+    default=True,
+    help="Validates the result with `plutil` before writing",
+)
+@click.pass_context
+def mutate_hotkyes(
+    ctx: click.Context,
+    plist_path_old: Path,
+    plist_path_new: Path,
+    print_common_lines: bool,
+) -> None:
+    """
+    Diffs two hotkey files, PLIST-PATH-OLD (left) with PLIST-PATH-NEW
+    """
+    raise NotImplementedError
+
+
+@main.command()
+@click.argument(
+    "plist-path",
+    type=click.Path(exists=True),
+    default=HOTKEY_PLIST_DEFAULT_PATH,
+)
+@click.option(
+    "--validate/--no-validate",
+    default=False,
+    help="Writes and validates the new data using plutil (tempfile)",
+)
+@click.pass_context
+def print_enabled(ctx: click.Context, plist_path: Path, validate: bool) -> None:
+    """
+    Prints a diff showing all enabled shortcuts. This serves also a sanity check, testing differ, updater and reader.
+    The real Mac settings WILL NOT change, this is safe.
+
+    plist-path is the path to plist file defining current hotkeys.
+    """
+    if not Path(plist_path).exists():
+        raise RuntimeError(f"{plist_path} couldn't be found")
+    diff = print_enabled_impl(plist_path=plist_path, validate=validate)
+    for d in next(diff):
+        click.echo(d)
 
 
 @main.command()
@@ -29,33 +135,12 @@ def main() -> None:
     "--print-code/--no-print-code", default=True, help="Print code or silent run"
 )
 def download_key_defs(print_code: bool) -> None:
+    """
+    Downloads and prints code definition from a [gist by jimratliff]
+    [gist by jimratliff]: https://gist.github.com/jimratliff/227088cc936065598bedfd91c360334e
+    """
     download_key_definitions(print_code=print_code)
 
 
-@main.command()
-@click.option("--plist-path", default=PLIST_PATH_S, help="Path to .plist file")
-@click.option("--color/--no-color", default=False, help="Suppresses using colors")
-@click.option(
-    "--validate/--no-validate",
-    default=False,
-    help="Writes and validates the new data using plutil (tempfile)",
-)
-def show_enabled(plist_path: str, color: bool, validate: bool) -> None:
-    """
-    Prints a diff showing all enabled shortcuts. This serves also a sanity check, testing differ, updater and reader.
-    The real Mac settings WILL NOT change, this is safe.
-    """
-    plist_path = os.path.expanduser(plist_path)
-    if not Path(plist_path).exists():
-        raise RuntimeError(f"{plist_path} couldn't be found")
-    if color:
-        if not find_spec("termcolor"):
-            print(
-                "Missing termcolor, install with extra: pip install mac-keyboard-shortcuts[color]",
-                file=sys.stderr,
-            )
-    show_enabled_impl(plist_path=plist_path, no_color=color, validate=validate)
-
-
 if __name__ == "__main__":
-    main(prog_name="mac-keyboard-shortcuts")  # pragma: no cover
+    main(prog_name="mac-keyboard-shortcuts", obj={})  # pragma: no cover

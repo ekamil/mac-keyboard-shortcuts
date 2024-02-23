@@ -5,6 +5,9 @@ from enum import Enum
 
 class Actions(Enum):
     """
+    Numerical identifier of what action a hotkey actually triggers. Settings -> Keyboard -> Keyboard Shortcuts.
+    Unfortunately the numbers here are basically reverse engineered.
+
     Lifted from https://github.com/NUIKit/CGSInternal/blob/master/CGSHotKeys.h#L38
     which probably is out of date
     """
@@ -83,6 +86,16 @@ class Actions(Enum):
 
     @classmethod
     def get_by_value(cls, action_number: int | str) -> Actions | None:
+        """
+        Find Action by value.
+
+        Args:
+            action_number(str|int): Number, ie. this enum's value
+
+        Returns:
+            Action: when found
+
+        """
         if match := list(filter(lambda a: str(a.value) == str(action_number), Actions)):
             return match[0]
         else:

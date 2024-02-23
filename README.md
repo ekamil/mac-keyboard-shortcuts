@@ -23,17 +23,18 @@ Reads, modifies and writes the plist with keyboard shortcuts.
 
 Kudos to all the people who compiled data sources I'm using here:
 
-- https://gist.github.com/mkhl/455002#file-ctrl-f1-c-L12
-- https://gist.github.com/jimratliff/227088cc936065598bedfd91c360334e
-- https://gist.github.com/stephancasas/74c4621e2492fb875f0f42778d432973
+- [Gist with at least some hotkey actions](https://gist.github.com/mkhl/455002#file-ctrl-f1-c-L12)
+- [Keycodes](https://gist.github.com/jimratliff/227088cc936065598bedfd91c360334e)
+- [Modifiers - all combinations](https://gist.github.com/stephancasas/74c4621e2492fb875f0f42778d432973)
 
 ## Features
 
-- TODO
+- Print, diff, and update Mac hotkeys
+- Works as a CLI utility and as a library
 
 ## Requirements
 
-- TODO
+- Mac, only tested on Sonoma
 
 ## Installation
 
@@ -45,11 +46,13 @@ $ pip install mac-keyboard-shortcuts
 
 ## Usage
 
-Please see the [Command-line Reference] for details.
+Please see [Command-line Reference] or [API Usage Examples] for details.
 
 ## Contributing
 
-Contributions are very welcome.
+Contributions are very welcome. For inspiration look at [file an issue|issues].
+Especially the action codes and the logic around modifier masks needs attention.
+
 To learn more, see the [Contributor Guide].
 
 ## License
@@ -76,4 +79,5 @@ This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter]
 
 [license]: https://github.com/ekamil/mac-keyboard-shortcuts/blob/main/LICENSE
 [contributor guide]: https://github.com/ekamil/mac-keyboard-shortcuts/blob/main/CONTRIBUTING.md
-[command-line reference]: https://mac-keyboard-shortcuts.readthedocs.io/en/latest/usage.html
+[command-line reference]: https://mac-keyboard-shortcuts.readthedocs.io/en/latest/cli-usage.html
+[api usage examples]: https://mac-keyboard-shortcuts.readthedocs.io/en/latest/api-usage.html

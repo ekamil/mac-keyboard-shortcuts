@@ -1,4 +1,4 @@
-# Usage
+# Command line
 
 ```{eval-rst}
 .. click:: mac_keyboard_shortcuts.__main__:main

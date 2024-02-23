@@ -7,10 +7,10 @@ from mac_keyboard_shortcuts.utils.print_side_by_side import side_by_side
 
 
 try:
-    from termcolor import colored  # type: ignore
+    from termcolor import colored
 except ImportError:
 
-    def colored(text: str, color: str, on_color: str | None = None) -> str:
+    def colored(text: str, color: str, on_color: str | None = None) -> str:  # type: ignore
         return text
 
 
@@ -18,13 +18,12 @@ def better_diff(
     left: typing.List[str],
     right: typing.List[str],
     width: int = 78,
-    as_string: bool = False,
     print_common_lines: bool = True,
     use_colours: bool = False,
     separator: typing.Optional[str] = None,
     left_title: typing.Optional[str] = None,
     right_title: typing.Optional[str] = None,
-) -> typing.Union[str, typing.List[str]]:
+) -> typing.List[str]:
     """Returns a side-by-side comparison of the two provided inputs, showing
     common lines between both inputs, and the lines that are unique to each.
 
@@ -48,8 +47,8 @@ def better_diff(
     :param right_title: Title to place on the right side, defaults to None
     :type right_title: typing.Optional[str], optional
 
-    :return: Lines or text of the merged side-by-side diff comparison output.
-    :rtype: typing.Union[str, typing.List[str]]
+    :return: Lines of the merged side-by-side diff comparison output.
+    :rtype: typing.List[str]
     """
 
     def _c(text: str, color: str, on_color: str | None = None) -> str:
@@ -89,7 +88,6 @@ def better_diff(
         left=left_side,
         right=right_side,
         width=width,
-        as_string=as_string,
         separator=separator,
         left_title=left_title,
         right_title=right_title,

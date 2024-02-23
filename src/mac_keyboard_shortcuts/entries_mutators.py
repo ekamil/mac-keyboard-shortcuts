@@ -4,10 +4,19 @@ from typing import Iterable
 from mac_keyboard_shortcuts.types.entry import HotKeyEntry
 
 
-def _turn_off_all_shortcuts(
+def turn_off_all_shortcuts(
     entries: Iterable[HotKeyEntry],
     only_managed: bool = True,
 ) -> Iterable[HotKeyEntry]:
+    """
+    Produces hotkeys which are all off.
+    Args:
+        entries: A list of entries to mutate
+        only_managed: Only mutate hotkeys whose Action is known
+
+    Returns: Generates possibly changed entries
+
+    """
     for value in entries:
         if (not only_managed) or value.managed:
             yield dataclasses.replace(value, enabled=False)
@@ -15,11 +24,15 @@ def _turn_off_all_shortcuts(
             yield dataclasses.replace(value)
 
 
-def _print_current(
-    entries: Iterable[HotKeyEntry], print_current: bool = False
-) -> Iterable[HotKeyEntry]:
-    if not print_current:
-        yield from entries
+def print_currently_enabled(entries: Iterable[HotKeyEntry]) -> Iterable[HotKeyEntry]:
+    """
+    Iterates and prints the entries as a short text.
+    Args:
+        entries:
+
+    Returns: entries
+
+    """
     print("Current values:")
     for value in entries:
         if value.enabled:

@@ -1210,6 +1210,23 @@ tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
 
 [[package]]
+name = "pytest-sphinx"
+version = "0.6.0"
+description = "Doctest plugin for pytest with support for Sphinx-specific doctest-directives"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pytest-sphinx-0.6.0.tar.gz", hash = "sha256:9add29fb7de87c241100216d9787d4ad2a93db91eced02e914a696b7a9a7a776"},
+    {file = "pytest_sphinx-0.6.0-py3-none-any.whl", hash = "sha256:542823b7d493b067a0d36bf1359db5f7ae2217e007190edad7201c44145cf451"},
+]
+
+[package.dependencies]
+pytest = ">=8.0.0"
+
+[package.extras]
+lint = ["black", "flake8", "isort (>=5)", "mypy"]
+
+[[package]]
 name = "pyupgrade"
 version = "3.15.1"
 description = "A tool to automatically upgrade syntax for newer versions."
@@ -1939,4 +1956,4 @@ color = ["termcolor"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "f70945933a20f8ed0fa84ffbd4be8485551cfd5c85dc3e4b892b426c0dae1ffa"
+content-hash = "2069a28b5c644fce03d9e4ae4ed60e3ba24e1006b11c069faa1d6d9da9275255"

@@ -2,19 +2,18 @@
 import os.path
 from typing import Iterable
 
-from mac_keyboard_shortcuts.api import PLIST_PATH_S
 from mac_keyboard_shortcuts.api import Actions
 from mac_keyboard_shortcuts.api import HotKeyEntry
 from mac_keyboard_shortcuts.api import Keys
 from mac_keyboard_shortcuts.api import Modifiers
-from mac_keyboard_shortcuts.api import plist_writer
-from mac_keyboard_shortcuts.utils.entries_mutators import _print_current
-from mac_keyboard_shortcuts.utils.entries_mutators import _turn_off_all_shortcuts
+from mac_keyboard_shortcuts.entries_mutators import print_currently_enabled
+from mac_keyboard_shortcuts.entries_mutators import turn_off_all_shortcuts
 from mac_keyboard_shortcuts.utils.plist_reading import parse_plist_data
 from mac_keyboard_shortcuts.utils.plist_writing import format_for_writing
+from mac_keyboard_shortcuts.utils.plist_writing import plist_writer
 
 
-PLIST_PATH = os.path.expanduser(PLIST_PATH_S)
+PLIST_PATH = os.path.expanduser("~/Library/Preferences/com.apple.symbolichotkeys.plist")
 
 
 def my_config_or_passthrough(
@@ -24,18 +23,23 @@ def my_config_or_passthrough(
     replace: bool = False,
 ) -> None:
     """
-    Turns off everything that's unknown (per actions enum) and
-    then sets my shortcuts.
+    Turns off everything whose function I don't know (per the Actions enum) and
+    then sets only my shortcuts.
     """
-    with plist_writer(path=PLIST_PATH, backup=backup, replace=replace) as plist_data:
+    with plist_writer(
+        path=PLIST_PATH,
+        backup=backup,
+        replace=replace,
+    ) as plist_data:
         parsed = parse_plist_data(plist_data)  # type:ignore[arg-type]
         # ####
         # TODO: this section here could be with run using py?
         # ####
         # Print current state
-        parsed = _print_current(parsed, print_current)
+        if print_current:
+            parsed = print_currently_enabled(parsed)
         # First pass - turn off everything
-        parsed = _turn_off_all_shortcuts(parsed)
+        parsed = turn_off_all_shortcuts(parsed)
         # Second pass
         parsed = set_my_shortcuts(parsed)
 
@@ -112,5 +116,6 @@ def set_my_shortcuts(
         action=Actions.kCGSHotKeySpotlightSearchField.value,
         key=Keys.KEY_SPACE,
         modifiers=[Modifiers.command],
-        enabled=not alfred,  # Change if not using alfred
+        enabled=not alfred,  # either Alfred or Spotlight
+        # other option would be to run one of them with a different hotkey
     )

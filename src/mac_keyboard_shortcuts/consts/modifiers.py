@@ -5,8 +5,12 @@ from enum import IntEnum
 
 class Modifiers(IntEnum):
     """
-    Source 1: https://developer.apple.com/documentation/appkit/nseventmodifierflags/
-    Local source `mdfind -name Events.h | grep Carbon`?
+    Key modifiers as a binary flags.
+
+    Source:
+    - [Gist by stephancasas](https://gist.github.com/stephancasas/74c4621e2492fb875f0f42778d432973)
+    - [apple docs](https://developer.apple.com/documentation/appkit/nseventmodifierflags/)
+    - local header file, but I find it unreliable `mdfind -name Events.h | grep Carbon`?
     """
 
     # fmt: off
