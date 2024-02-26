@@ -115,8 +115,15 @@ def mutate_hotkyes(
     default=False,
     help="Writes and validates the new data using plutil (tempfile)",
 )
+@click.option(
+    "--diff/--no-diff",
+    default=True,
+    help="Prints in the form a diff",
+)
 @click.pass_context
-def print_enabled(ctx: click.Context, plist_path: Path, validate: bool) -> None:
+def print_enabled(
+    ctx: click.Context, plist_path: Path, validate: bool, diff: bool
+) -> None:
     """
     Prints a diff showing all enabled shortcuts. This serves also a sanity check, testing differ, updater and reader.
     The real Mac settings WILL NOT change, this is safe.
@@ -125,8 +132,7 @@ def print_enabled(ctx: click.Context, plist_path: Path, validate: bool) -> None:
     """
     if not Path(plist_path).exists():
         raise RuntimeError(f"{plist_path} couldn't be found")
-    diff = print_enabled_impl(plist_path=plist_path, validate=validate)
-    for d in next(diff):
+    for d in print_enabled_impl(plist_path=plist_path, validate=validate, do_diff=diff):
         click.echo(d)
 
 

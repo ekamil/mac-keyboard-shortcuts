@@ -1,6 +1,7 @@
 import plistlib as pl
 import subprocess  # noqa: S404
 import tempfile
+from operator import attrgetter
 from pathlib import Path
 from typing import Generator
 
@@ -13,13 +14,15 @@ def print_enabled_impl(
     plist_path: Path,
     no_color: bool = False,
     validate: bool = True,
-) -> Generator[list[str], None, None]:
+    do_diff: bool = True,
+) -> Generator[str, None, None]:
     """
     Yields a diff just before validation.
     Args:
         plist_path: Path to plist file
         no_color: suppress printing color codes
         validate: run plutil on the file
+        do_diff: yield formatted, side-by-side diff
 
     Returns: generator with a diff (list[str])
 
@@ -29,13 +32,16 @@ def print_enabled_impl(
     old = parse_plist_data(data)
     new = turn_off_all_shortcuts(old)
 
-    diff = diff_hotkeys_definitions(
-        list(new),
-        list(old),
-        use_colours=not no_color,
-        print_common_lines=False,
-    )
-    yield diff
+    if do_diff:
+        yield from diff_hotkeys_definitions(
+            list(new),
+            list(old),
+            use_colours=not no_color,
+            print_common_lines=False,
+        )
+    else:
+        yield from map(lambda s: s.as_short_str(), filter(attrgetter("enabled"), old))
+
     if validate:
         with tempfile.NamedTemporaryFile(mode="wb") as tmp:
             pl.dump(data, tmp, fmt=pl.FMT_BINARY, sort_keys=True, skipkeys=False)
