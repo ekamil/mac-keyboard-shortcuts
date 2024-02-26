@@ -30,11 +30,8 @@ def my_config_or_passthrough(
         path=PLIST_PATH,
         backup=backup,
         replace=replace,
-    ) as plist_data:
-        parsed = parse_plist_data(plist_data)  # type:ignore[arg-type]
-        # ####
-        # TODO: this section here could be with run using py?
-        # ####
+    ) as raw_plist_data:
+        parsed = parse_plist_data(raw_plist_data)  # type:ignore[arg-type]
         # Print current state
         if print_current:
             parsed = print_currently_enabled(parsed)
@@ -46,7 +43,7 @@ def my_config_or_passthrough(
         # Override the original dict
         format_for_writing(
             parsed,
-            plist_data,  # type:ignore[arg-type]
+            raw_plist_data,  # type:ignore[arg-type]
         )
 
 

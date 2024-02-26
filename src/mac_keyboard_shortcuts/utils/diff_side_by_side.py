@@ -5,7 +5,6 @@ import typing
 
 from mac_keyboard_shortcuts.utils.print_side_by_side import side_by_side
 
-
 try:
     from termcolor import colored
 except ImportError:
@@ -34,8 +33,6 @@ def better_diff(
 
     :param width: Character width of the overall output, defaults to 78
     :type width: int, optional
-    :param as_string: Whether to return a string (as opposed to a list of strings), defaults to False
-    :type as_string: bool, optional
     :param print_common_lines: Whether to print lines identical in left and right, defaults to True
     :type print_common_lines: bool, optional
     :param use_colours: Whether to print in colour using colorama, defaults to False

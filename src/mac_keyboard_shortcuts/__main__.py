@@ -7,9 +7,9 @@ import click
 
 from mac_keyboard_shortcuts.usecases.authoring import download_key_definitions
 from mac_keyboard_shortcuts.usecases.diff_plist_files import diff_plists_file_impl
+from mac_keyboard_shortcuts.usecases.mutate_using_python import mutate_impl
 from mac_keyboard_shortcuts.usecases.print_enabled import print_enabled_impl
 from mac_keyboard_shortcuts.usecases.print_plist_file import print_plist_file_impl
-
 
 HOTKEY_PLIST_DEFAULT_PATH = os.path.expanduser(
     "~/Library/Preferences/com.apple.symbolichotkeys.plist"
@@ -60,16 +60,16 @@ def print_plist(plist_path: str) -> None:
 @click.pass_context
 def diff_plists(
     ctx: click.Context,
-    plist_path_old: Path,
-    plist_path_new: Path,
+    plist_path_old: str,
+    plist_path_new: str,
     print_common_lines: bool,
 ) -> None:
     """
     Diffs two hotkey files, PLIST-PATH-OLD (left) with PLIST-PATH-NEW
     """
     for d in diff_plists_file_impl(
-        plist_path_old,
-        plist_path_new,
+        Path(plist_path_old),
+        Path(plist_path_new),
         print_common_lines=print_common_lines,
     ):
         click.echo(d)
@@ -77,31 +77,37 @@ def diff_plists(
 
 @main.command()
 @click.argument(
-    "plist-path",
-    type=click.Path(exists=True),
-    default=HOTKEY_PLIST_DEFAULT_PATH,
+    "python-file",
+    type=click.Path(exists=True, readable=True),
 )
 @click.argument(
-    "python",
-    type=click.Path(exists=True),
+    "plist-path",
+    type=click.Path(exists=True, readable=True),
+    default=HOTKEY_PLIST_DEFAULT_PATH,
 )
-@click.option("--dry-run", default=False, help="Only prints a diff")
+@click.option("--dry-run", default=False, is_flag=True, help="Only prints a diff")
 @click.option(
     "--validate/--no-validate",
     default=True,
     help="Validates the result with `plutil` before writing",
 )
 @click.pass_context
-def mutate_hotkyes(
+def mutate(
     ctx: click.Context,
-    plist_path_old: Path,
-    plist_path_new: Path,
-    print_common_lines: bool,
+    python_file: str,
+    plist_path: str,
+    dry_run: bool,
+    validate: bool,
 ) -> None:
     """
-    Diffs two hotkey files, PLIST-PATH-OLD (left) with PLIST-PATH-NEW
+    Mutates PLIST_PATH using the `main` function from PYTHON_FILE
     """
-    raise NotImplementedError
+    mutate_impl(
+        python_file=Path(python_file),
+        plist_path=Path(plist_path),
+        dry_run=dry_run,
+        validate=validate,
+    )
 
 
 @main.command()
@@ -122,7 +128,7 @@ def mutate_hotkyes(
 )
 @click.pass_context
 def print_enabled(
-    ctx: click.Context, plist_path: Path, validate: bool, diff: bool
+    ctx: click.Context, plist_path: str, validate: bool, diff: bool
 ) -> None:
     """
     Prints a diff showing all enabled shortcuts. This serves also a sanity check, testing differ, updater and reader.
@@ -130,9 +136,12 @@ def print_enabled(
 
     plist-path is the path to plist file defining current hotkeys.
     """
-    if not Path(plist_path).exists():
+    _plist_path = Path(plist_path)
+    if not _plist_path.exists():
         raise RuntimeError(f"{plist_path} couldn't be found")
-    for d in print_enabled_impl(plist_path=plist_path, validate=validate, do_diff=diff):
+    for d in print_enabled_impl(
+        plist_path=_plist_path, validate=validate, do_diff=diff
+    ):
         click.echo(d)
 
 
