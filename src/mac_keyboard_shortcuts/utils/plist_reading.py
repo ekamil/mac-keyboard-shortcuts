@@ -2,9 +2,9 @@ import plistlib as pl
 from operator import attrgetter
 from pathlib import Path
 from pprint import pprint
-from typing import Iterable
 from typing import Union
 
+from mac_keyboard_shortcuts.types.aliases import HotKeyEntries
 from mac_keyboard_shortcuts.types.apple import SymbolicHotKeys
 from mac_keyboard_shortcuts.types.apple import SymbolicHotKeysPlist
 from mac_keyboard_shortcuts.types.entry import HotKeyEntry
@@ -16,9 +16,9 @@ def print_plist(path: Union[str, Path]) -> None:
     pprint(data)
 
 
-def parse_plist_data(plist_data: SymbolicHotKeysPlist) -> Iterable[HotKeyEntry]:
+def parse_plist_data(plist_data: SymbolicHotKeysPlist) -> HotKeyEntries:
     entries: SymbolicHotKeys = plist_data["AppleSymbolicHotKeys"]
-    parsed: Iterable[HotKeyEntry]
+    parsed: HotKeyEntries
     parsed = sorted(
         [HotKeyEntry.parse(key, value) for key, value in entries.items()],
         key=attrgetter("action"),

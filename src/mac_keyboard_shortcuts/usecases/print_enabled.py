@@ -46,7 +46,7 @@ def print_enabled_impl(
         with tempfile.NamedTemporaryFile(mode="wb") as tmp:
             pl.dump(data, tmp, fmt=pl.FMT_BINARY, sort_keys=True, skipkeys=False)
             tmp.flush()
-            exit_code = subprocess.call(["plutil", tmp.name])  # noqa: S603,S607
+            exit_code = subprocess.call(["plutil", str(tmp)])  # noqa: S603,S607
             if exit_code != 0:
                 raise RuntimeError(
                     "plutil couldn't validate the new data. Please don't use it on real config files!"

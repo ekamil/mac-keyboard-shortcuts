@@ -5,17 +5,16 @@ import subprocess  # noqa: S404
 from pathlib import Path
 from typing import Any
 from typing import Generator
-from typing import Iterable
 from typing import Optional
 
+from mac_keyboard_shortcuts.types.aliases import HotKeyEntries
 from mac_keyboard_shortcuts.types.apple import SymbolicHotKeysPlist
-from mac_keyboard_shortcuts.types.entry import HotKeyEntry
 from mac_keyboard_shortcuts.utils.plist import diff_hotkeys_definitions
 from mac_keyboard_shortcuts.utils.plist_reading import parse_plist_data
 
 
 def format_for_writing(
-    parsed_entries: Iterable[HotKeyEntry],
+    parsed_entries: HotKeyEntries,
     mutable_data: Optional[SymbolicHotKeysPlist] = None,
 ) -> SymbolicHotKeysPlist:
     result = mutable_data if mutable_data is not None else {"AppleSymbolicHotKeys": {}}

@@ -90,7 +90,7 @@ class Actions(Enum):
         Find Action by value.
 
         Args:
-            action_number(str|int): Number, ie. this enum's value
+            action_number(str|int): Number, i.e. this enum's value
 
         Returns:
             Action: when found

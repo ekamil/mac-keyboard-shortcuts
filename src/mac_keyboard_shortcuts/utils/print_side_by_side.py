@@ -25,8 +25,6 @@ def side_by_side(
 
     :param width: Character width of the overall output, defaults to 78
     :type width: int, optional
-    :param as_string: Whether to return a string (as opposed to a list of strings), defaults to False
-    :type as_string: bool, optional
     :param separator: String separating the left and right side, defaults to " | "
     :type separator: typing.Optional[str], optional
     :param left_title: Title to place on the left side, defaults to None

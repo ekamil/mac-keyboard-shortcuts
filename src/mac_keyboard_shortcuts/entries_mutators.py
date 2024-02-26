@@ -1,13 +1,12 @@
 import dataclasses
-from typing import Iterable
 
-from mac_keyboard_shortcuts.types.entry import HotKeyEntry
+from mac_keyboard_shortcuts.types.aliases import HotKeyEntries
 
 
 def turn_off_all_shortcuts(
-    entries: Iterable[HotKeyEntry],
+    entries: HotKeyEntries,
     only_managed: bool = True,
-) -> Iterable[HotKeyEntry]:
+) -> HotKeyEntries:
     """
     Produces hotkeys which are all off.
     Args:
@@ -24,7 +23,7 @@ def turn_off_all_shortcuts(
             yield dataclasses.replace(value)
 
 
-def print_currently_enabled(entries: Iterable[HotKeyEntry]) -> Iterable[HotKeyEntry]:
+def print_currently_enabled(entries: HotKeyEntries) -> HotKeyEntries:
     """
     Iterates and prints the entries as a short text.
     Args:
