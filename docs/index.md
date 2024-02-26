@@ -7,7 +7,7 @@ end-before: <!-- github-only -->
 [license]: license
 [contributor guide]: contributing
 [command-line reference]: cli-usage
-[api usage examples]: api-usage
+[usage examples]: usage-examples
 
 ```{toctree}
 ---
@@ -16,7 +16,7 @@ maxdepth: 2
 ---
 
 cli-usage
-api-usage
+usage-examples
 reference
 contributing
 Code of Conduct <codeofconduct>

@@ -8,7 +8,7 @@ Consult {class}`mac_keyboard_shortcuts.api.Actions` and {class}`mac_keyboard_sho
 
 1. Put the code below somewhere, the file should be named like a valid Python module
 
-```{literalinclude} /examples/minimal_with_alfred/code.py
+```{literalinclude} /examples/execute_module/code.py
 ---
 language: python
 ---
