@@ -1,7 +1,9 @@
 name: Pages
 
 on:
-  - pull_request
+  push:
+    branches:
+      - main
 
 jobs:
   pages:
