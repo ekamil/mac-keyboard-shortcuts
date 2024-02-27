@@ -7,6 +7,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx_click",
+    "sphinx_copybutton",
     "myst_parser",
 ]
 autodoc_typehints = "description"
