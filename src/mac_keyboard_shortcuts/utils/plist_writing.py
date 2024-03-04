@@ -65,9 +65,10 @@ def plist_writer(
         # write and move patter to ensure that we can dump the data
         pl.dump(data, fd, fmt=pl.FMT_BINARY, sort_keys=True, skipkeys=False)
     if print_diff:
-        diff_hotkeys_definitions(
+        for d in diff_hotkeys_definitions(
             old=parse_plist_data(data_for_diff), new=parse_plist_data(data)
-        )
+        ):
+            print(d)
     if validate:
         exit_code = subprocess.call(["plutil", new_file])  # noqa: S603,S607
         if exit_code != 0:
