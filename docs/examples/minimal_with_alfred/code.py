@@ -35,13 +35,17 @@ def main(
         path=PLIST_PATH,
         backup=backup,
         replace=replace,
+        validate=validate,
+        print_diff=print_diff,
     ) as raw_plist_data:
         parsed = parse_plist_data(raw_plist_data)  # type:ignore[arg-type]
         # Print current state
         if print_current:
             parsed = print_currently_enabled(parsed)
         # First pass - turn off everything
-        parsed = turn_off_all_shortcuts(parsed)
+        parsed = turn_off_all_shortcuts(
+            parsed, only_managed=False, verbose=print_current
+        )
         # Second pass
         parsed = list(set_my_shortcuts(parsed, alfred=alfred, contexts=contexts))
         # Override the original dict
@@ -53,7 +57,7 @@ def main(
 
 def set_my_shortcuts(
     entries: Iterable[HotKeyEntry], *, alfred: bool = True, contexts: bool = True
-) -> Iterable[HotKeyEntry]:
+) -> Generator[HotKeyEntry, None, None]:
     yield HotKeyEntry(
         action=Actions.kCGSHotKeyFocusApplicationWindow.value,
         key=Keys.KEY_GRAVE,
@@ -119,4 +123,17 @@ def set_my_shortcuts(
         modifiers=[Modifiers.command],
         enabled=not alfred,  # either Alfred or Spotlight
         # other option would be to run one of them with a different hotkey
+    )
+
+
+if __name__ == "__main__":
+    subprocess.run(["osascript", "-e", 'tell application "System Preferences" to quit'])
+    main(
+        print_current=False,
+        backup=True,
+        replace=True,
+        validate=True,
+        print_diff=True,
+        alfred=False,
+        contexts=False,
     )
