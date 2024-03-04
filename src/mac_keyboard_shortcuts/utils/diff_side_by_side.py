@@ -2,6 +2,7 @@
 
 import difflib
 import typing
+from typing import Optional  # TODO(3.10): Move to new union syntax after dropping 3.9
 
 from mac_keyboard_shortcuts.utils.print_side_by_side import side_by_side
 
@@ -9,7 +10,7 @@ try:
     from termcolor import colored
 except ImportError:
 
-    def colored(text: str, color: str, on_color: str | None = None) -> str:  # type: ignore
+    def colored(text: str, color: str, on_color: Optional[str] = None) -> str:  # type: ignore
         return text
 
 
@@ -19,9 +20,9 @@ def better_diff(
     width: int = 78,
     print_common_lines: bool = True,
     use_colours: bool = False,
-    separator: typing.Optional[str] = None,
-    left_title: typing.Optional[str] = None,
-    right_title: typing.Optional[str] = None,
+    separator: Optional[str] = None,
+    left_title: Optional[str] = None,
+    right_title: Optional[str] = None,
 ) -> typing.List[str]:
     """Returns a side-by-side comparison of the two provided inputs, showing
     common lines between both inputs, and the lines that are unique to each.
@@ -48,7 +49,7 @@ def better_diff(
     :rtype: typing.List[str]
     """
 
-    def _c(text: str, color: str, on_color: str | None = None) -> str:
+    def _c(text: str, color: str, on_color: Optional[str] = None) -> str:
         if use_colours:
             return colored(text, color, on_color)  # type: ignore
         else:
