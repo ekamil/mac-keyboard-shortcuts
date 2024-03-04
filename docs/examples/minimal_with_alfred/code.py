@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os.path
-from typing import Iterable
+import subprocess
+from typing import Iterable, Generator
 
 from mac_keyboard_shortcuts.api import Actions
 from mac_keyboard_shortcuts.api import HotKeyEntry
@@ -16,11 +17,15 @@ from mac_keyboard_shortcuts.utils.plist_writing import plist_writer
 PLIST_PATH = os.path.expanduser("~/Library/Preferences/com.apple.symbolichotkeys.plist")
 
 
-def my_config_or_passthrough(
+def main(
     *,
     print_current: bool = False,
     backup: bool = True,
     replace: bool = False,
+    validate: bool = True,
+    print_diff: bool = True,
+    alfred: bool = True,
+    contexts: bool = True
 ) -> None:
     """
     Turns off everything whose function I don't know (per the Actions enum) and
@@ -38,8 +43,7 @@ def my_config_or_passthrough(
         # First pass - turn off everything
         parsed = turn_off_all_shortcuts(parsed)
         # Second pass
-        parsed = set_my_shortcuts(parsed)
-
+        parsed = list(set_my_shortcuts(parsed, alfred=alfred, contexts=contexts))
         # Override the original dict
         format_for_writing(
             parsed,
