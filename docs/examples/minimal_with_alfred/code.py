@@ -130,10 +130,11 @@ if __name__ == "__main__":
     subprocess.run(["osascript", "-e", 'tell application "System Preferences" to quit'])
     main(
         print_current=False,
-        backup=True,
-        replace=True,
+        backup=False,
+        replace=False,
         validate=True,
         print_diff=True,
         alfred=False,
         contexts=False,
     )
+    subprocess.run(["killall", "Finder"])
