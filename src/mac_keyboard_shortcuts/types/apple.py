@@ -31,8 +31,9 @@ class SymbolicHotKey(TypedDict):
     value: Optional[Value]
 
 
-SymbolicHotKeys = dict[str, SymbolicHotKey]
+SymbolicHotKeyAction = str
+SymbolicHotKeys = dict[SymbolicHotKeyAction, SymbolicHotKey]
 
 
 class SymbolicHotKeysPlist(TypedDict):
-    AppleSymbolicHotKeys: dict[str, SymbolicHotKey]
+    AppleSymbolicHotKeys: SymbolicHotKeyAction

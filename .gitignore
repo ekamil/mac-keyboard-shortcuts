@@ -4,6 +4,7 @@
 /.pytype/
 /dist/
 /docs/_build/
+/docs/_build_man/
 /src/*.egg-info/
 __pycache__/
 .idea
