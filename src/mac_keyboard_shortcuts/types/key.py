@@ -1,5 +1,4 @@
 from __future__ import annotations
-from typing import Optional  # TODO(3.10): Move to new union syntax after dropping 3.9
 
 from dataclasses import dataclass
 
@@ -9,7 +8,7 @@ from mac_keyboard_shortcuts.consts.apple import NON_ASCII
 @dataclass(frozen=True)
 class Key:
     label: str
-    character: Optional[str]
+    character: str | None
     ascii_code: int
     mac_key_code: int
     layout_dependence: str

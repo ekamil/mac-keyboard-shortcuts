@@ -2,9 +2,11 @@ import importlib.machinery
 import importlib.util
 from pathlib import Path
 
-from mac_keyboard_shortcuts.types.aliases import HotKeyEntries, HKMutator
+from mac_keyboard_shortcuts.types.aliases import HKMutator
+from mac_keyboard_shortcuts.types.aliases import HotKeyEntries
 from mac_keyboard_shortcuts.utils.plist_reading import parse_plist_data
-from mac_keyboard_shortcuts.utils.plist_writing import plist_writer, format_for_writing
+from mac_keyboard_shortcuts.utils.plist_writing import format_for_writing
+from mac_keyboard_shortcuts.utils.plist_writing import plist_writer
 
 
 def import_script(

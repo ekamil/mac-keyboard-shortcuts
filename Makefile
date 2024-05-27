@@ -7,4 +7,3 @@ docs/requirements.txt: poetry.lock
 	-e furo= \
 	-e myst-parser= \
 	> docs/requirements.txt
-

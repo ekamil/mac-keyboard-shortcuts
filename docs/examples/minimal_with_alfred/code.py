@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import os.path
 import subprocess
-from typing import Iterable, Generator
+from typing import Generator
+from typing import Iterable
 
 from mac_keyboard_shortcuts.api import Actions
 from mac_keyboard_shortcuts.api import HotKeyEntry
@@ -25,7 +26,7 @@ def main(
     validate: bool = True,
     print_diff: bool = True,
     alfred: bool = True,
-    contexts: bool = True
+    contexts: bool = True,
 ) -> None:
     """
     Turns off everything whose function I don't know (per the Actions enum) and

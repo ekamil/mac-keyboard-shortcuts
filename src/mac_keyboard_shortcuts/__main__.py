@@ -11,6 +11,7 @@ from mac_keyboard_shortcuts.usecases.mutate_using_python import mutate_impl
 from mac_keyboard_shortcuts.usecases.print_enabled import print_enabled_impl
 from mac_keyboard_shortcuts.usecases.print_plist_file import print_plist_file_impl
 
+
 HOTKEY_PLIST_DEFAULT_PATH = os.path.expanduser(
     "~/Library/Preferences/com.apple.symbolichotkeys.plist"
 )

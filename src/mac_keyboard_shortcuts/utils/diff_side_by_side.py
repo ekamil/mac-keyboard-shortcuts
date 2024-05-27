@@ -6,6 +6,7 @@ from typing import Optional  # TODO(3.10): Move to new union syntax after droppi
 
 from mac_keyboard_shortcuts.utils.print_side_by_side import side_by_side
 
+
 try:
     from termcolor import colored
 except ImportError:

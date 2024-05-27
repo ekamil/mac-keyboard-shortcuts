@@ -12,4 +12,3 @@ For definition of "known", see {class}`mac_keyboard_shortcuts.api.Actions`
 language: python
 ---
 ```
-
